@@ -1,61 +1,159 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Confirmação de Presença - Aniversário 🎉</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 500px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1606312619344-cd9dc234af6c') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
     }
-    h2 {
+
+.overlay {
+  background-color: rgba(98, 0, 238, 0.85);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* abaixo das imagens */
+}
+
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 450px;
       text-align: center;
+      z-index: 1;
+      position: relative;
     }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #6a1b9a; /* roxo escuro */
+    }
+
     label {
       display: block;
-      margin-top: 10px;
+      text-align: left;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
     }
+
     input {
       width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      box-sizing: border-box;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
     }
+
     button {
       margin-top: 15px;
       padding: 10px 20px;
       font-size: 16px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #add-agregado {
+      background-color: #9c27b0;
+      color: white;
+      margin-right: 10px;
+    }
+
+    #add-agregado:hover {
+      background-color: #7b1fa2;
+    }
+
+    #submit-btn {
+      background-color: #8e24aa;
+      color: white;
+    }
+
+    #submit-btn:hover {
+      background-color: #6a1b9a;
+    }
+
+    #confirmacao {
+      display: none;
+      background-color: #e1bee7;
+      color: #4a148c;
+      border: 1px solid #ce93d8;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+.decor-img {
+  position: absolute;
+  width: 80px;
+  opacity: 1;
+  z-index: 2; /* acima da overlay */
+}
+
+
+    .img-top-left { top: 20px; left: 20px; }
+    .img-top-right { top: 20px; right: 20px; }
+    .img-bottom-left { bottom: 20px; left: 20px; }
+    .img-bottom-right { bottom: 20px; right: 20px; }
+
+    @media (max-width: 500px) {
+      .decor-img { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <h2>Confirmação de Presença - Aniversário 🎉</h2>
+  <div class="overlay"></div>
 
-  <form id="rsvp-form">
-    <label for="nome">Seu nome:</label>
-    <input type="text" id="nome" required>
+  <!-- Imagens decorativas -->
+  <img src="WhatsApp Image 2025-06-13 at 16.44.03.jpeg" class="decor-img img-top-left" alt="balão" />
+  <img src="WhatsApp Image 2025-06-13 at 16.44.17.jpeg" class="decor-img img-top-right" alt="balão" />
+  <img src="WhatsApp Image 2025-06-13 at 16.44.31.jpeg" class="decor-img img-bottom-left" alt="balão" />
+  <img src="WhatsApp Image 2025-06-13 at 16.44.52.jpeg" class="decor-img img-bottom-right" alt="balão" />
 
-    <div id="agregado-div" style="display:none;">
-      <label for="agregado">Nome do agregado:</label>
-      <input type="text" id="agregado">
+  <div class="container">
+    <h2>Confirmação de Presença 🎉</h2>
+
+    <form id="rsvp-form">
+      <label for="nome">Seu nome:</label>
+      <input type="text" id="nome" required />
+
+      <div id="agregado-div" style="display:none;">
+        <label for="agregado">Nome do agregado:</label>
+        <input type="text" id="agregado" />
+      </div>
+
+      <button type="button" id="add-agregado">Adicionar agregado</button>
+      <button type="submit" id="submit-btn">Confirmar Presença</button>
+    </form>
+
+    <div id="confirmacao">
+      🎉 Presença confirmada com sucesso! Obrigado por confirmar! 🎉
     </div>
-
-    <button type="button" id="add-agregado">Adicionar agregado</button>
-    <button type="submit">Confirmar Presença</button>
-  </form>
+  </div>
 
   <script>
     const form = document.getElementById('rsvp-form');
     const agregadoDiv = document.getElementById('agregado-div');
     const addAgregadoBtn = document.getElementById('add-agregado');
+    const confirmacao = document.getElementById('confirmacao');
 
     addAgregadoBtn.addEventListener('click', () => {
       agregadoDiv.style.display = 'block';
@@ -71,12 +169,16 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, agregado })
-      }); 
+      });
 
       const result = await response.json();
-      alert(result.message);
-      form.reset();
-      agregadoDiv.style.display = 'none';
+
+      if (response.ok) {
+        form.style.display = 'none';
+        confirmacao.style.display = 'block';
+      } else {
+        alert('Erro ao registrar presença. Tente novamente.');
+      }
     });
   </script>
 
