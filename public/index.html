@@ -67,7 +67,7 @@
       const nome = document.getElementById('nome').value.trim();
       const agregado = document.getElementById('agregado').value.trim();
 
-      const response = await fetch('https://aniversario-form.onrender.com', {
+      const response = await fetch('https://aniversario-form.onrender.com/api/presenca', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, agregado })
