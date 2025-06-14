@@ -10,26 +10,9 @@ const CSV_FILE = path.join(__dirname, 'presencas.csv');
 
 app.use(cors());
 app.use(express.json());
-
-// Ajuste aqui conforme sua estrutura. Exemplo:
-// Se backend e public estão no mesmo nível:
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Escrita no CSV, seu código permanece igual
-// Escrita no CSV, seu código permanece igual
-// Escrita no CSV, seu código permanece igual
-// Escrita no CSV, seu código permanece igual
-// Escrita no CSV, seu código permanece igual
-const csvWriter = createCsvWriter({
-  path: CSV_FILE,
-  header: [
-    { id: 'nome', title: 'Nome' },
-    { id: 'agregado', title: 'Agregado' },
-    { id: 'data', title: 'Data' }
-  ],
-  append: fs.existsSync(CSV_FILE)
-});
-
+// 🔥 Rota para registrar presença
 app.post('/api/presenca', async (req, res) => {
   const { nome, agregado } = req.body;
 
@@ -39,6 +22,16 @@ app.post('/api/presenca', async (req, res) => {
     data: new Date().toISOString()
   };
 
+  const csvWriter = createCsvWriter({
+    path: CSV_FILE,
+    header: [
+      { id: 'nome', title: 'Nome' },
+      { id: 'agregado', title: 'Agregado' },
+      { id: 'data', title: 'Data' }
+    ],
+    append: fs.existsSync(CSV_FILE)
+  });
+
   try {
     await csvWriter.writeRecords([novaPresenca]);
     res.json({ message: 'Presença registrada com sucesso (CSV)!' });
@@ -47,7 +40,7 @@ app.post('/api/presenca', async (req, res) => {
   }
 });
 
-// Rota para baixar o CSV
+// 🔥 Rota para baixar CSV
 app.get('/api/presencas', (req, res) => {
   if (fs.existsSync(CSV_FILE)) {
     res.download(CSV_FILE, 'lista-presenca.csv');
@@ -56,7 +49,7 @@ app.get('/api/presencas', (req, res) => {
   }
 });
 
-// Rota para listar os dados em JSON
+// 🔥 Rota para listar dados em JSON
 app.get('/api/lista', (req, res) => {
   if (!fs.existsSync(CSV_FILE)) {
     return res.status(404).json({ error: 'Arquivo CSV não encontrado.' });
@@ -73,7 +66,7 @@ app.get('/api/lista', (req, res) => {
   res.json(presencas);
 });
 
-// fallback para o front, para rotas SPA
+// 🔥 SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
