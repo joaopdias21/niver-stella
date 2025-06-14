@@ -16,11 +16,14 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.post('/api/presenca', async (req, res) => {
   const { nome, agregado } = req.body;
 
-  const novaPresenca = {
-    nome,
-    agregado: agregado || '',
-    data: new Date().toISOString()
-  };
+const hoje = new Date();
+const dataFormatada = `${hoje.getDate().toString().padStart(2, '0')}/${(hoje.getMonth() + 1).toString().padStart(2, '0')}/${hoje.getFullYear()}`;
+
+const novaPresenca = {
+  nome,
+  agregado: agregado || '',
+  data: dataFormatada // ✅ Formato dd/mm/yyyy
+};
 
   const csvWriter = createCsvWriter({
     path: CSV_FILE,
