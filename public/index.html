@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Confirmação de Presença - Aniversário 🎉</title>
+  <title>Confirmação de Presença 🎉</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,23 +21,23 @@
       position: relative;
     }
 
-.overlay {
-  background-color: rgba(98, 0, 238, 0.85);
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; /* abaixo das imagens */
-}
-
+    .overlay {
+      background-color: rgba(98, 0, 238, 0.8);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
 
     .container {
       background-color: white;
-      padding: 30px;
+      padding: 25px;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       width: 90%;
-      max-width: 450px;
+      max-width: 380px;
       text-align: center;
       z-index: 1;
       position: relative;
@@ -41,7 +45,8 @@
 
     h2 {
       margin-bottom: 20px;
-      color: #6a1b9a; /* roxo escuro */
+      color: #6a1b9a;
+      font-size: 24px;
     }
 
     label {
@@ -50,31 +55,32 @@
       margin-top: 15px;
       font-weight: bold;
       color: #333;
+      font-size: 16px;
     }
 
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-top: 6px;
       border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
+      border-radius: 8px;
+      font-size: 16px;
     }
 
     button {
       margin-top: 15px;
-      padding: 10px 20px;
+      padding: 12px 20px;
       font-size: 16px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      width: 100%;
       transition: background-color 0.3s;
     }
 
     #add-agregado {
       background-color: #9c27b0;
       color: white;
-      margin-right: 10px;
     }
 
     #add-agregado:hover {
@@ -84,6 +90,7 @@
     #submit-btn {
       background-color: #8e24aa;
       color: white;
+      margin-top: 10px;
     }
 
     #submit-btn:hover {
@@ -100,21 +107,38 @@
       font-size: 18px;
     }
 
-.decor-img {
-  position: absolute;
-  width: 80px;
-  opacity: 1;
-  z-index: 2; /* acima da overlay */
-}
+    .decor-img {
+      position: absolute;
+      width: 60px;
+      opacity: 1;
+      z-index: 2;
+    }
 
-
-    .img-top-left { top: 20px; left: 20px; }
-    .img-top-right { top: 20px; right: 20px; }
-    .img-bottom-left { bottom: 20px; left: 20px; }
-    .img-bottom-right { bottom: 20px; right: 20px; }
+    .img-top-left { top: 15px; left: 15px; }
+    .img-top-right { top: 15px; right: 15px; }
+    .img-bottom-left { bottom: 15px; left: 15px; }
+    .img-bottom-right { bottom: 15px; right: 15px; }
 
     @media (max-width: 500px) {
-      .decor-img { display: none; }
+      h2 {
+        font-size: 22px;
+      }
+
+      label {
+        font-size: 15px;
+      }
+
+      input {
+        font-size: 15px;
+      }
+
+      button {
+        font-size: 15px;
+      }
+
+      .decor-img {
+        width: 50px;
+      }
     }
   </style>
 </head>
@@ -123,10 +147,10 @@
   <div class="overlay"></div>
 
   <!-- Imagens decorativas -->
-  <img src="WhatsApp Image 2025-06-13 at 16.44.03.jpeg" class="decor-img img-top-left" alt="balão" />
-  <img src="WhatsApp Image 2025-06-13 at 16.44.17.jpeg" class="decor-img img-top-right" alt="balão" />
-  <img src="WhatsApp Image 2025-06-13 at 16.44.31.jpeg" class="decor-img img-bottom-left" alt="balão" />
-  <img src="WhatsApp Image 2025-06-13 at 16.44.52.jpeg" class="decor-img img-bottom-right" alt="balão" />
+  <img src="foto1.jpeg" class="decor-img img-top-left" alt="balão" />
+  <img src="foto2.jpeg" class="decor-img img-top-right" alt="balão" />
+  <img src="foto3.jpeg" class="decor-img img-bottom-left" alt="balão" />
+  <img src="foto4.jpeg" class="decor-img img-bottom-right" alt="balão" />
 
   <div class="container">
     <h2>Confirmação de Presença 🎉</h2>
