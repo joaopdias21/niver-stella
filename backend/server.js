@@ -52,6 +52,18 @@ app.get('/api/presencas', (req, res) => {
   }
 });
 
+
+app.delete('/api/limpar', (req, res) => {
+  const header = 'Nome,Agregado,Data\n';
+  
+  fs.writeFile(CSV_FILE, header, (err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Erro ao limpar o CSV.' });
+    }
+    res.json({ message: 'CSV limpo com sucesso!' });
+  });
+});
+
 // 🔥 Rota para listar dados em JSON
 app.get('/api/lista', (req, res) => {
   if (!fs.existsSync(CSV_FILE)) {
