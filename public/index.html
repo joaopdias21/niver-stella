@@ -11,18 +11,20 @@
 
     body {
       margin: 0;
+      padding: 0;
+      overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: url('https://images.unsplash.com/photo-1606312619344-cd9dc234af6c') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
       position: relative;
     }
 
     .overlay {
-      background-color: rgba(98, 0, 238, 0.8);
+      background-color: rgba(98, 0, 238, 0.85);
       position: absolute;
       top: 0;
       left: 0;
@@ -107,50 +109,32 @@
       font-size: 18px;
     }
 
-    .decor-img {
-      position: absolute;
-      width: 60px;
-      opacity: 1;
-      z-index: 2;
+    .mapa-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 15px;
+      text-decoration: none;
+      color: #4a148c;
+      background-color: #f3e5f5;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
 
-    .img-top-left { top: 15px; left: 15px; }
-    .img-top-right { top: 15px; right: 15px; }
-    .img-bottom-left { bottom: 15px; left: 15px; }
-    .img-bottom-right { bottom: 15px; right: 15px; }
+    .mapa-link:hover {
+      background-color: #e1bee7;
+    }
 
-    @media (max-width: 500px) {
-      h2 {
-        font-size: 22px;
-      }
-
-      label {
-        font-size: 15px;
-      }
-
-      input {
-        font-size: 15px;
-      }
-
-      button {
-        font-size: 15px;
-      }
-
-      .decor-img {
-        width: 50px;
-      }
+    .mapa-link img {
+      width: 24px;
+      margin-right: 8px;
     }
   </style>
 </head>
 <body>
 
   <div class="overlay"></div>
-
-  <!-- Imagens decorativas -->
-  <img src="foto1.jpeg" class="decor-img img-top-left" alt="balão" />
-  <img src="foto2.jpeg" class="decor-img img-top-right" alt="balão" />
-  <img src="foto3.jpeg" class="decor-img img-bottom-left" alt="balão" />
-  <img src="foto4.jpeg" class="decor-img img-bottom-right" alt="balão" />
 
   <div class="container">
     <h2>Confirmação de Presença 🎉</h2>
@@ -169,7 +153,17 @@
     </form>
 
     <div id="confirmacao">
-      🎉 Presença confirmada com sucesso! Obrigado por confirmar! 🎉
+      🎉 Sua presença foi confirmada com sucesso! Obrigado por confirmar! 🎉
+      <br><br>
+      O evento acontecerá no dia 06/09/2025
+      <br><br>
+      Espero por você !!
+      <br><br>
+      Acesse a localização 
+      <a class="mapa-link" href="https://www.google.com/maps/place/Sua+Localizacao" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Mapa">
+        Ver Localização
+      </a>
     </div>
   </div>
 
@@ -194,8 +188,6 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, agregado })
       });
-
-      const result = await response.json();
 
       if (response.ok) {
         form.style.display = 'none';
