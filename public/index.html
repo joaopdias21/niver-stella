@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Confirmação de Presença 🎉</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -61,6 +59,15 @@
     }
 
     input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .agregado-input {
       width: 100%;
       padding: 12px;
       margin-top: 6px;
@@ -130,6 +137,8 @@
       width: 24px;
       margin-right: 8px;
     }
+
+    
   </style>
 </head>
 <body>
@@ -141,14 +150,11 @@
 
     <form id="rsvp-form">
       <label for="nome">Seu nome:</label>
-      <input type="text" id="nome" required />
+      <input type="text" id="nome" placeholder="Nome completo" required />
 
-      <div id="agregado-div" style="display:none;">
-        <label for="agregado">Nome do agregado:</label>
-        <input type="text" id="agregado" />
-      </div>
+      <div id="agregados-container"></div>
 
-      <button type="button" id="add-agregado">Adicionar agregado</button>
+      <button type="button" id="add-agregado">Adicionar acompanhante</button>
       <button type="submit" id="submit-btn">Confirmar Presença</button>
     </form>
 
@@ -157,47 +163,81 @@
       <br><br>
       <ul style="list-style: none; padding: 0; text-align: left;">
         <li>🗓️ <strong>Data:</strong> 06/09/2025 às 20h</li>
-        <li>👗 <strong>Traje:</strong> Esporte fino</li>
-        <li>✨ <strong>Esperamos por você!</strong></li>
-      </ul>
       <br>
 
-      <a class="mapa-link" href="https://maps.app.goo.gl/Z4Css1gLhsrTTSyR6" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Mapa">
-        Ver Localização
-      </a>
+        <li>🅿️ <strong>Estacionamento:</strong> No local</li>
+      <br>
+
+        <li>👗 <strong>Traje:</strong> Esporte fino</li>
+      <br>
+
+        <li>✨ <strong>Esperamos por você!</strong></li>
+      </ul>
     </div>
   </div>
 
   <script>
-    const form = document.getElementById('rsvp-form');
-    const agregadoDiv = document.getElementById('agregado-div');
-    const addAgregadoBtn = document.getElementById('add-agregado');
-    const confirmacao = document.getElementById('confirmacao');
+ const form = document.getElementById('rsvp-form');
+const agregadosContainer = document.getElementById('agregados-container');
+const addAgregadoBtn = document.getElementById('add-agregado');
+const confirmacao = document.getElementById('confirmacao');
 
-    addAgregadoBtn.addEventListener('click', () => {
-      agregadoDiv.style.display = 'block';
-    });
+addAgregadoBtn.addEventListener('click', () => {
+  const div = document.createElement('div');
+  div.style.marginTop = '10px';
+  div.style.position = 'relative'; // para posicionar o ícone
 
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Nome do acompanhante';
+  input.classList.add('agregado-input');
+  input.style.paddingRight = '30px'; // para não sobrepor com o ícone
 
-      const nome = document.getElementById('nome').value.trim();
-      const agregado = document.getElementById('agregado').value.trim();
+  const deleteIcon = document.createElement('span');
+  deleteIcon.textContent = '🗑️'; // ícone lixeira emoji
+  deleteIcon.style.position = 'absolute';
+  deleteIcon.style.right = '8px';
+  deleteIcon.style.top = '50%';
+  deleteIcon.style.transform = 'translateY(-50%)';
+  deleteIcon.style.cursor = 'pointer';
+  deleteIcon.style.fontSize = '18px';
+  deleteIcon.title = 'Remover acompanhante';
 
-      const response = await fetch('https://aniversario-form.onrender.com/api/presenca', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, agregado })
-      });
+  deleteIcon.addEventListener('click', () => {
+    agregadosContainer.removeChild(div);
+  });
 
-      if (response.ok) {
-        form.style.display = 'none';
-        confirmacao.style.display = 'block';
-      } else {
-        alert('Erro ao registrar presença. Tente novamente.');
-      }
-    });
+  div.appendChild(input);
+  div.appendChild(deleteIcon);
+  agregadosContainer.appendChild(div);
+});
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const nome = document.getElementById('nome').value.trim();
+  const agregadoInputs = document.querySelectorAll('.agregado-input');
+
+  const agregados = Array.from(agregadoInputs)
+    .map(input => input.value.trim())
+    .filter(nome => nome.length > 0)
+    .join(' | '); // 🔥 Separa agregados com " | "
+
+  const response = await fetch('https://aniversario-form.onrender.com/api/presenca', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome, agregado: agregados })
+  });
+
+  if (response.ok) {
+    form.style.display = 'none';
+    confirmacao.style.display = 'block';
+  } else {
+    alert('Erro ao registrar presença. Tente novamente.');
+  }
+});
+
+
   </script>
 
 </body>
