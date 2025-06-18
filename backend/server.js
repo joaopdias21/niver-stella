@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-// 🔥 Importa a chave do Firebase
+// 🔥 Importa a chave do Firebaseeeeee
 require('dotenv').config();
-const admin = require('firebase-admin');
-
+const admin = require('firebase-admin') ;
+ 
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
