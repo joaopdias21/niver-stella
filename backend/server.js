@@ -1,17 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+require('dotenv').config();
 
 // 🔥 Importa a chave do Firebaseeeeee
-require('dotenv').config();
 const admin = require('firebase-admin') ;
  
 admin.initializeApp({
+  
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-  })
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'), 
+  }),
+
 });
 
 
@@ -27,25 +29,41 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
+
+// Logo após carregar as variáveis de ambiente e antes de inicializar o Firebase:
+console.log('=== Variáveis de ambiente ===');
+console.log('FIREBASE_PROJECT_ID:', process.env.FIREBASE_PROJECT_ID);
+console.log('FIREBASE_CLIENT_EMAIL:', process.env.FIREBASE_CLIENT_EMAIL);
+console.log('FIREBASE_PRIVATE_KEY (início):', process.env.FIREBASE_PRIVATE_KEY?.slice(0, 30)); // s
+
+
 // 🔥 Registrar presença
 app.post('/api/presenca', async (req, res) => {
+  console.log('POST /api/presenca recebido com body:', req.body);
+
   const { nome, agregado } = req.body;
 
   if (!nome) {
+    console.log('Erro: nome obrigatório não fornecido');
     return res.status(400).json({ error: 'Nome é obrigatório' });
   }
 
   const hoje = new Date();
-  const dataFormatada = `${hoje.getDate().toString().padStart(2, '0')}/${(hoje.getMonth() + 1).toString().padStart(2, '0')}/${hoje.getFullYear()}`;
+  const dataFormatada = `${hoje.getDate().toString().padStart(2, '0')}/${
+    (hoje.getMonth() + 1).toString().padStart(2, '0')
+  }/${hoje.getFullYear()}`;
 
   try {
+    console.log('Tentando adicionar presença no Firestore...');
     await presencasCollection.add({
       nome,
       agregado: agregado || '',
-      data: dataFormatada
+      data: dataFormatada,
     });
+    console.log('Presença adicionada com sucesso:', { nome, agregado, data: dataFormatada });
     res.json({ message: 'Presença registrada com sucesso!' });
   } catch (error) {
+    console.error('Erro no Firebase:', error);
     res.status(500).json({ error: 'Erro ao registrar presença.' });
   }
 });
