@@ -15,9 +15,7 @@ admin.initializeApp({
 });
 
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+
 
 const db = admin.firestore();
 const presencasCollection = db.collection('presencas');
