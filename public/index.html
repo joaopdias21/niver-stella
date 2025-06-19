@@ -185,16 +185,16 @@ const confirmacao = document.getElementById('confirmacao');
 addAgregadoBtn.addEventListener('click', () => {
   const div = document.createElement('div');
   div.style.marginTop = '10px';
-  div.style.position = 'relative'; // para posicionar o ícone
+  div.style.position = 'relative';
 
   const input = document.createElement('input');
   input.type = 'text';
   input.placeholder = 'Nome do acompanhante';
   input.classList.add('agregado-input');
-  input.style.paddingRight = '30px'; // para não sobrepor com o ícone
+  input.style.paddingRight = '30px';
 
   const deleteIcon = document.createElement('span');
-  deleteIcon.textContent = '🗑️'; // ícone lixeira emoji
+  deleteIcon.textContent = '🗑️';
   deleteIcon.style.position = 'absolute';
   deleteIcon.style.right = '8px';
   deleteIcon.style.top = '50%';
@@ -221,12 +221,17 @@ form.addEventListener('submit', async function(e) {
   const agregados = Array.from(agregadoInputs)
     .map(input => input.value.trim())
     .filter(nome => nome.length > 0)
-    .join(' | '); // 🔥 Separa agregados com " | "
+    .join(' | ');
 
-  const response = await fetch('https://aniversario-form.onrender.com/api/presenca', {
+  const response = await fetch('http://localhost:3000/api/presenca', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nome, agregado: agregados })
+    headers: {
+      'Content-Type': 'application/json' // <- Define que está enviando JSON
+    },
+    body: JSON.stringify({
+      nome: nome,
+      agregado: agregados
+    })
   });
 
   if (response.ok) {
@@ -236,7 +241,6 @@ form.addEventListener('submit', async function(e) {
     alert('Erro ao registrar presença. Tente novamente.');
   }
 });
-
 
   </script>
 
