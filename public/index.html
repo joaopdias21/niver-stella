@@ -223,8 +223,8 @@ form.addEventListener('submit', async function(e) {
     .filter(nome => nome.length > 0)
     .join(' | ');
 
-  //const response = await fetch('https://aniversario-form.onrender.com/api/presenca', {
-  const response = await fetch('http://localhost:3000/api/presenca', {
+  const response = await fetch('https://aniversario-form.onrender.com/api/presenca', {
+ // const response = await fetch('http://localhost:3000/api/presenca', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json' // <- Define que está enviando JSON
