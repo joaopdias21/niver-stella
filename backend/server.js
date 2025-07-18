@@ -2,17 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const mysql = require('mysql2');
+const { Parser } = require('json2csv');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Conexão com o banco MySQL no Railway
 const connection = mysql.createConnection({
-  host: 'shortline.proxy.rlwy.net',
+  host: 'yamanote.proxy.rlwy.net',
   user: 'root',
-  password: 'CzriszPLzhVwULmFbiemtAvEBtvKdjkO',
+  password: 'RkjbYpMdIaBDKvBrVYLIpGfumeNFlkQA',
   database: 'railway',
-  port: 53973
+  port: 34062
 });
 
 // Teste de conexão
@@ -45,7 +46,7 @@ app.post('/api/presenca', (req, res) => {
 
   connection.query(sql, values, (err, results) => {
     if (err) {
-      console.error('❌ Erro ao inserir no MySQL:', err);
+      console.error('❌ Erro ao inserir no MySQL:', err.sqlMessage || err.message || err);
       return res.status(500).json({ error: 'Erro ao registrar presença no banco.' });
     }
     console.log('✅ Presença registrada no MySQL:', results);
@@ -77,10 +78,46 @@ app.delete('/api/limpar', (req, res) => {
   });
 });
 
+
+
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
+
+app.get('/api/backup', (req, res) => {
+  const sql = 'SELECT * FROM presencas ORDER BY id DESC';
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erro ao gerar backup:', err);
+      return res.status(500).json({ error: 'Erro ao gerar backup' });
+    }
+
+    try {
+      const json2csvParser = new Parser();
+      const csv = json2csvParser.parse(results);
+
+      const dataAtual = new Date().toISOString().replace(/[:.]/g, '-');
+      const fileName = `backup_presencas_${dataAtual}.csv`;
+
+      // 🔽 Configura o download
+      res.header('Content-Type', 'text/csv');
+      res.attachment(fileName);
+      res.send(csv);
+
+    } catch (err) {
+      console.error('Erro ao converter para CSV:', err);
+      res.status(500).json({ error: 'Erro ao gerar CSV' });
+    }
+  });
+});
+
 // 🔥 SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+
 
 // 🔥 Start servidor
 app.listen(PORT, () => {
